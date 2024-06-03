@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="400.0" prefWidth="519.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hethongdatvexemphim.controllers.client.DangKyController">
+
+    <center>
+        <VBox alignment="center" spacing="10">
+            <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Đăng ký tài khoản" />
+
+            <HBox spacing="10">
+                <Label prefHeight="18.0" prefWidth="123.0" text="Tên đăng nhập:" />
+                <TextField fx:id="txtUsername" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label prefHeight="18.0" prefWidth="123.0" text="Mật khẩu:" />
+                <PasswordField fx:id="txtPassword" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label prefHeight="18.0" prefWidth="123.0" text="Xác nhận mật khẩu:" />
+                <PasswordField fx:id="txtConfirmPassword" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label prefHeight="18.0" prefWidth="123.0" text="Họ và tên:" />
+                <TextField fx:id="txtFullName" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label prefWidth="123.0" text="Ngày sinh:" />
+                <DatePicker fx:id="datePickerDob" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label prefWidth="123.0" text="Số điện thoại:" />
+                <TextField fx:id="txtPhoneNumber" />
+            </HBox>
+
+            <HBox spacing="10">
+                <Label prefWidth="123.0" text="Email:" />
+                <TextField fx:id="txtEmail" />
+            </HBox>
+
+            <Button onAction="#registerButtonAction" text="Đăng ký" />
+         <Button onAction="#registerButtonAction" text="Đăng nhập" />
+        </VBox>
+    </center>
+
+</BorderPane>
