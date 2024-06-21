@@ -37,7 +37,27 @@ public class Movie implements Serializable {
         Descripsion = descripsion;
         Image = image;
     }
-    public Movie( int id_Genre, String movieName, Date releasedDate, String country, Time duration, String director, String language, Integer censorship, Float version, Float price, String descripsion, String image) {
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "Id_Movie=" + Id_Movie +
+                ", Id_Genre=" + Id_Genre +
+                ", MovieName='" + MovieName + '\'' +
+                ", ReleasedDate=" + ReleasedDate +
+                ", Country='" + Country + '\'' +
+                ", Duration=" + Duration +
+                ", Director='" + Director + '\'' +
+                ", Language='" + Language + '\'' +
+                ", Censorship=" + Censorship +
+                ", Version=" + Version +
+                ", Price=" + Price +
+                ", Descripsion='" + Descripsion + '\'' +
+                ", Image='" + Image + '\'' +
+                '}';
+    }
+
+    public Movie(int id_Genre, String movieName, Date releasedDate, String country, Time duration, String director, String language, Integer censorship, Float version, Float price, String descripsion, String image) {
 
         Id_Genre = id_Genre;
         MovieName = movieName;

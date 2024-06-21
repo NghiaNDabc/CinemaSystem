@@ -1,28 +1,25 @@
 package com.example.hethongdatvexemphim.controllers.client;
 
-import com.example.hethongdatvexemphim.models.AlertUtil;
+import com.example.hethongdatvexemphim.models.Genre;
+import com.example.hethongdatvexemphim.util.AlertUtil;
 import com.example.hethongdatvexemphim.models.User;
 import com.example.hethongdatvexemphim.socket.GoiTin;
 import com.example.hethongdatvexemphim.socket.YeuCau;
+import com.example.hethongdatvexemphim.util.HashUtil;
+import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DangNhapController {
     @FXML
@@ -32,7 +29,7 @@ public class DangNhapController {
     @FXML
     TextField txtTenDangNhap;
     @FXML
-    TextField txtMatKhau;
+    PasswordField txtMatKhau;
     @FXML
     Label labelThongBao;
 
@@ -61,11 +58,18 @@ public class DangNhapController {
             ArrayList<User> list = new ArrayList<>();
             list.add(check);
             tin.setListT(list);
-            oos = new ObjectOutputStream(client.getOutputStream());
-            oos.writeObject(tin);
-            ois = new ObjectInputStream(client.getInputStream());
-            user = (User) ois.readObject();
 
+            Gson gson = new Gson();
+            String json = gson.toJson(tin);
+            System.out.println(json);
+            PrintWriter printWriter =  new PrintWriter(client.getOutputStream(),true);
+            printWriter.println(json);
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            String responseJson = in.readLine();
+            user = gson.fromJson(responseJson, User.class);
+            printWriter.close();
+            ois.close();
+            client.close();
         }catch (Exception e){
 
         }
@@ -73,8 +77,9 @@ public class DangNhapController {
             return user;
         }
         AlertUtil.showAlertError("Đăng nhập thất bại", "Sai tên đăng nhập hoặc mật khẩu");
-        return user;
+        return null;
     }
+
     @FXML
     public void btnDangKyClick(ActionEvent event){
         FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/hethongdatvexemphim/clientView/DangKy.fxml"));
@@ -89,17 +94,12 @@ public class DangNhapController {
         }
     }
    public void btnDangNhapClick(ActionEvent event) throws IOException {
-       // Xác thực người dùng (có thể thêm mã xác thực ở đây)
-       // Nếu xác thực thành công, chuyển sang màn hình chính (Home.fxml)
-       // Tải file FXML của màn hình Home
 
-       String username = txtTenDangNhap.getText();
-       String password = txtMatKhau.getText();
+       String username =txtTenDangNhap.getText();
+       String password = txtMatKhau.getText();//HashUtil.sha256(
        User user = DangNhap(username, password);
-       if(user == null){
-       }
-
-       else {
+       System.out.println(user);
+       if(user != null){
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/hethongdatvexemphim/clientView/Home.fxml"));
            Parent homeRoot = loader.load();
             HomeController homeController = loader.getController();

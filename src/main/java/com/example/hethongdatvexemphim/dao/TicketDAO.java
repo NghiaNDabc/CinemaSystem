@@ -1,6 +1,6 @@
 package com.example.hethongdatvexemphim.dao;
 
-import com.example.hethongdatvexemphim.database.JdbcUtil;
+import com.example.hethongdatvexemphim.util.JdbcUtil;
 import com.example.hethongdatvexemphim.models.Ticket;
 
 import java.sql.*;

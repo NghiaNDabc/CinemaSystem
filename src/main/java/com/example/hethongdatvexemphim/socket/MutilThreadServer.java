@@ -15,7 +15,7 @@ public class MutilThreadServer implements Runnable{
             while (true) {
                 Socket socket = serverSocket.accept();
                 InetAddress inetAddress = socket.getInetAddress();
-                System.out.println("Đã kết nối với " + inetAddress.getHostAddress());
+                //System.out.println("Đã kết nối với " + inetAddress.getHostAddress());
                 ClientHandler clientHandler = new ClientHandler(socket);
                 Thread thread = new Thread(clientHandler);
                 thread.start();

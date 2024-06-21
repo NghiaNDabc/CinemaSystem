@@ -1,16 +1,38 @@
 package com.example.hethongdatvexemphim.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.sql.Date;
 
 public class User implements Serializable {
+
     private String UserName;
+
     private String PassWord;
+
     private String Role;
+
     private String FullName;
+
     private Date Dob;
+
     private String PhoneNumber;
+
     private String Email;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "UserName='" + UserName + '\'' +
+                ", PassWord='" + PassWord + '\'' +
+                ", Role='" + Role + '\'' +
+                ", FullName='" + FullName + '\'' +
+                ", Dob=" + Dob +
+                ", PhoneNumber='" + PhoneNumber + '\'' +
+                ", Email='" + Email + '\'' +
+                '}';
+    }
 
     public User() {
     }

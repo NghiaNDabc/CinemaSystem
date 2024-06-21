@@ -4,6 +4,7 @@ import com.example.hethongdatvexemphim.models.Movie;
 import com.example.hethongdatvexemphim.models.User;
 import com.example.hethongdatvexemphim.socket.GoiTin;
 import com.example.hethongdatvexemphim.socket.YeuCau;
+import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,15 +17,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import  com.google.gson.reflect.TypeToken;
+import java.io.*;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import java.lang.reflect.Type;
 public class HomeController implements Initializable {
     List<Movie> movies;
     @FXML
@@ -102,6 +102,29 @@ public class HomeController implements Initializable {
         movieBox.getChildren().addAll(movieImageView, movieInfo);
         return  movieBox;
     }
+    public static ArrayList<Movie> getListMovie() {
+        ArrayList<Movie> list = null;
+        try (Socket socket = new Socket("localhost", 8888);
+             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+
+            // Tạo yêu cầu xem danh sách phim
+            GoiTin<Movie> goiTin = new GoiTin<>(null, YeuCau.XemDanhSachPhim);
+            Gson gson = new Gson();
+            String json = gson.toJson(goiTin);
+            printWriter.println(json);
+
+            // Đọc phản hồi từ server
+            String responseJson = in.readLine();
+            Type listType = new TypeToken<ArrayList<Movie>>(){}.getType();
+            list = gson.fromJson(responseJson, listType);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    /*
     public static ArrayList<Movie> getListMovie(){
         ArrayList<Movie> list=null;
         Socket socket = null;
@@ -109,11 +132,17 @@ public class HomeController implements Initializable {
         ObjectInputStream inp = null;
         try  {
             socket = new Socket("localhost",8888);
-            oup = new ObjectOutputStream(socket.getOutputStream());
+            //oup = new ObjectOutputStream(socket.getOutputStream());
 
             //ArrayList<Movie> saches =  new ArrayList<>();
             GoiTin <Movie> goiTin = new GoiTin(null, YeuCau.XemDanhSachPhim);
-            oup.writeObject(goiTin);
+            //oup.writeObject(goiTin);
+
+            Gson gson = new Gson();
+            String json = gson.toJson(goiTin);
+            System.out.println(json);
+            PrintWriter printWriter =  new PrintWriter(socket.getOutputStream(),true);
+            printWriter.println(json);
             inp = new ObjectInputStream(socket.getInputStream());
             list= (ArrayList<Movie> ) inp.readObject();
 
@@ -123,5 +152,5 @@ public class HomeController implements Initializable {
             throw new RuntimeException(e);
         }
         return list;
-    }
+    }*/
 }
